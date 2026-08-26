@@ -1,5 +1,4 @@
-
-1.def login(username, password):
+def login(username, password):
 
     if not username:
         return False
@@ -11,3 +10,7 @@
         return False
 
     return result
+'''
+1.username 为空时返回False
+2.except 扑获异常报错则执行False
+'''
