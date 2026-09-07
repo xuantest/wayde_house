@@ -229,13 +229,13 @@
           <stringProp name="TestPlan.comments">${__time(/1000,)}</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="IF 控制器">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="IF 控制器" enabled="true">
           <stringProp name="IfController.condition">${__jexl3(${sharedworker1_#} == 0,)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="01.注册">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="01.注册" enabled="true">
             <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
             <stringProp name="HTTPSampler.port">6060</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
@@ -300,7 +300,7 @@ if (myToken != null) {
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="JDBC 后置处理程序">
+          <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="JDBC 后置处理程序" enabled="true">
             <stringProp name="dataSource">sharedworker</stringProp>
             <stringProp name="query">select id from tb_account_user where mobile = ${sql_result}
 </stringProp>
@@ -314,7 +314,7 @@ if (myToken != null) {
             <stringProp name="variableNames">wayde_id</stringProp>
           </JDBCPostProcessor>
           <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="02.完成注册引导页操作">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="02.完成注册引导页操作" enabled="true">
             <stringProp name="HTTPSampler.path">/bff-mp/v1/user/update</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -419,7 +419,7 @@ if (myToken != null) {
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 预处理程序">
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 预处理程序" enabled="true">
           <stringProp name="scriptLanguage">groovy</stringProp>
           <stringProp name="parameters">GLOBAL_TOKEN</stringProp>
           <stringProp name="filename"></stringProp>
@@ -436,7 +436,7 @@ if (globalToken != null) {
 }</stringProp>
         </JSR223PreProcessor>
         <hashTree/>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP请求默认值">
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP请求默认值" enabled="true">
           <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
           <stringProp name="HTTPSampler.port">6060</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
@@ -447,7 +447,7 @@ if (globalToken != null) {
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
         </ConfigTestElement>
         <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
