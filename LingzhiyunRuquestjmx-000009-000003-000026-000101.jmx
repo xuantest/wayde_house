@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LingzhiyunRequestAutomation09071015">
+      <stringProp name="TestPlan.comments">/Users/fh/Downloads/apache-jmeter-5.6.3/lib</stringProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="注册主流程">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="JDBC Connection Configuration" enabled="false">
+          <boolProp name="autocommit">true</boolProp>
+          <stringProp name="checkQuery"></stringProp>
+          <stringProp name="connectionAge">5000</stringProp>
+          <stringProp name="connectionProperties"></stringProp>
+          <stringProp name="dataSource">sharedworker</stringProp>
+          <stringProp name="dbUrl">jdbc:mysql://192.168.1.228:3306/sharedworker?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8&amp;allowPublicKeyRetrieval=true</stringProp>
+          <stringProp name="driver">com.mysql.cj.jdbc.Driver</stringProp>
+          <stringProp name="initQuery"></stringProp>
+          <boolProp name="keepAlive">true</boolProp>
+          <stringProp name="password">fXG4#Oky</stringProp>
+          <stringProp name="poolMax">2</stringProp>
+          <boolProp name="preinit">false</boolProp>
+          <stringProp name="timeout">10000</stringProp>
+          <stringProp name="transactionIsolation">DEFAULT</stringProp>
+          <stringProp name="trimInterval">60000</stringProp>
+          <stringProp name="username">dev_admin</stringProp>
+        </JDBCDataSource>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="sql_result" elementType="Argument">
+              <stringProp name="Argument.name">sql_result</stringProp>
+              <stringProp name="Argument.value">${__time(/1000,)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+          <stringProp name="TestPlan.comments">${__time(/1000,)}</stringProp>
+        </Arguments>
+        <hashTree/>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="计数器">
+          <stringProp name="CounterConfig.start">1</stringProp>
+          <stringProp name="CounterConfig.end">9999999999</stringProp>
+          <stringProp name="CounterConfig.incr">1</stringProp>
+          <stringProp name="CounterConfig.name">calc</stringProp>
+          <stringProp name="CounterConfig.format">1</stringProp>
+          <boolProp name="CounterConfig.per_user">false</boolProp>
+        </CounterConfig>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SQL查询" enabled="false">
+          <stringProp name="dataSource">sharedworker</stringProp>
+          <stringProp name="query">select mobile from tb_account_user where mobile = ${sql_result}
+</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames">sharedworker1</stringProp>
+          <stringProp name="TestPlan.comments">${__time(/1000,)}</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="IF 控制器" enabled="false">
+          <stringProp name="IfController.condition">${__jexl3(${sharedworker1_#} == 0,)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="01.注册/登录">
+          <stringProp name="TestPlan.comments">${sql_result}</stringProp>
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.path">/auth/login/phone</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;phoneNumber&quot;: &quot;15377163598&quot;,&#xd;
+  &quot;smsCode&quot;: &quot;888888&quot;,&#xd;
+  &quot;loginType&quot;: 1,&#xd;
+  &quot;mobileInfo&quot;: &quot;&quot;,&#xd;
+  &quot;cpId&quot;: &quot;&quot;,&#xd;
+  &quot;promotionCode&quot;: &quot;&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+              <stringProp name="110541305">token</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 后置处理程序" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters">P_token</stringProp>
+            <stringProp name="script">def myToken = vars.get(&quot;P_token&quot;)
+
+// 如果 token 不为空，把它设置成全局属性
+if (myToken != null) {
+    props.put(&quot;GLOBAL_TOKEN&quot;, myToken)
+    log.info(&quot;✅ 全局 Token 已设置: &quot; + myToken)
+} else {
+    log.warn(&quot;⚠️ token 为空，请检查正则提取是否成功&quot;)
+}</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">107</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">JQaT4vWiwxTSnrNW</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789110342739</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">P_token</stringProp>
+            <stringProp name="RegexExtractor.regex">&quot;token&quot;:&quot;(.+?)&quot;</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default">wayde_null</stringProp>
+            <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+            <stringProp name="RegexExtractor.match_number">1</stringProp>
+          </RegexExtractor>
+          <hashTree/>
+        </hashTree>
+        <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="JDBC 后置处理程序" enabled="false">
+          <stringProp name="dataSource">sharedworker</stringProp>
+          <stringProp name="query">select id from tb_account_user where mobile = ${sql_result}
+</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames">wayde_id</stringProp>
+        </JDBCPostProcessor>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="02.完成注册引导页操作" enabled="false">
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/user/update</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;userId&quot;: ${wayde_id_1},&#xd;
+  &quot;nickName&quot;: &quot;接口自动化测试${wayde_id_1}&quot;,&#xd;
+  &quot;gender&quot;: 1,&#xd;
+  &quot;birthday&quot;: &quot;1995-09-04 00:00:00&quot;,&#xd;
+  &quot;education&quot;: &quot;5&quot;,&#xd;
+  &quot;skillList&quot;: [&#xd;
+    {&#xd;
+      &quot;relationId&quot;: &quot;4611686018427387913&quot;,&#xd;
+      &quot;skillName&quot;: &quot;产品经理&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;relationId&quot;: &quot;4611686018427387980&quot;,&#xd;
+      &quot;skillName&quot;: &quot;训狗&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;relationId&quot;: &quot;4611686018427387981&quot;,&#xd;
+      &quot;skillName&quot;: &quot;宠物社会化训练&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;userType&quot;: &quot;1&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="02.获取ip">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/cmm/track/getIp</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="用户定义的变量">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">0</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">xZNk4ZwpwBVixnjO</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789110343212</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="03.发布任务">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/task/release</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;taskName&quot;: &quot;后端开发,${calc}&quot;,&#xd;
+  &quot;taskType&quot;: 1,&#xd;
+  &quot;taskEffectivenessType&quot;: 1,&#xd;
+  &quot;settlementType&quot;: 1,&#xd;
+  &quot;peopleNumber&quot;: 1,&#xd;
+  &quot;sex&quot;: 1,&#xd;
+  &quot;taskUnitAmount&quot;: 100,&#xd;
+  &quot;provinceId&quot;: 44,&#xd;
+  &quot;provinceName&quot;: &quot;广东省&quot;,&#xd;
+  &quot;cityId&quot;: 4401,&#xd;
+  &quot;cityName&quot;: &quot;广州市&quot;,&#xd;
+  &quot;regionId&quot;: 440106,&#xd;
+  &quot;regionName&quot;: &quot;天河区&quot;,&#xd;
+  &quot;taskPlace&quot;: &quot;广东省广州市天河区黄埔大道&quot;,&#xd;
+  &quot;longitude&quot;: 113.37926,&#xd;
+  &quot;latitude&quot;: 23.118244,&#xd;
+  &quot;taskContent&quot;: &quot;准备&quot;,&#xd;
+  &quot;taskDuration&quot;: 1,&#xd;
+  &quot;education&quot;: 0,&#xd;
+  &quot;heightBegin&quot;: 0,&#xd;
+  &quot;heightEnd&quot;: 0,&#xd;
+  &quot;ageBegin&quot;: 18,&#xd;
+  &quot;ageEnd&quot;: 0,&#xd;
+  &quot;workMeal&quot;: 0,&#xd;
+  &quot;trafficWeal&quot;: 0,&#xd;
+  &quot;taskWorkStandardVideoCover&quot;: &quot;&quot;,&#xd;
+  &quot;taskWorkStandardVideo&quot;: &quot;&quot;,&#xd;
+  &quot;detailAddress&quot;: &quot;test001&quot;,&#xd;
+  &quot;taskOccupationRemark&quot;: &quot;自动test1131&quot;,&#xd;
+  &quot;employeeBenefit&quot;: &quot;2026839914468872192,2026839915387424768,2026839915425173504,2026839915471310848,2026839915509059584,2026839915534225408,2026839915559391232,2026839915592945664,2026839915618111488&quot;,&#xd;
+  &quot;taxType&quot;: 1,&#xd;
+  &quot;taxRate&quot;: 1.12,&#xd;
+  &quot;taxAmount&quot;: &quot;1.12&quot;,&#xd;
+  &quot;taxPayType&quot;: 2,&#xd;
+  &quot;draftsId&quot;: &quot;&quot;,&#xd;
+  &quot;cappTaskOccupationTypeList&quot;: [&#xd;
+    {&#xd;
+      &quot;relationId&quot;: &quot;2097639922847109122&quot;,&#xd;
+      &quot;occupationName&quot;: &quot;后端开发&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;cappTaskWorkTimeList&quot;: [&#xd;
+    {&#xd;
+      &quot;workStartTime&quot;: &quot;2026-09-11 17:00:00&quot;,&#xd;
+      &quot;workEndTime&quot;: &quot;2026-09-11 17:30:00&quot;&#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;workStartTime&quot;: &quot;2026-09-11 17:00:00&quot;,&#xd;
+  &quot;workEndTime&quot;: &quot;2026-09-11 17:30:00&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">1177</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">ygTnwfS5en4POBjz</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789097961026</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON提取器taskid">
+            <stringProp name="JSONPostProcessor.referenceNames">taskid</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.data.tasKId</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">wayde_taskid is null</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON提取器获取taskcode">
+            <stringProp name="JSONPostProcessor.referenceNames">taskcode</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.data.taskCode</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">wayde_taskcode is null</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="04.getMiniproTemplateId">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/push/userSubscribeTemplate/getMiniproTemplateId</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;code&quot;: 2&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">10</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">nP631wfhmyqZwzLa</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789097961525</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON提取器">
+            <stringProp name="JSONPostProcessor.referenceNames"></stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs"></stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="正则表达式提取器">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">secret</stringProp>
+            <stringProp name="RegexExtractor.regex">&quot;data&quot;:(.+?)}</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default">wayde_error</stringProp>
+            <boolProp name="RegexExtractor.default_empty_value">false</boolProp>
+            <stringProp name="RegexExtractor.match_number">0</stringProp>
+          </RegexExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="05.userSubscribeTemplate/subscribe">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/push/userSubscribeTemplate/subscribe</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;msgTemplateIds&quot;: ${secret}&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">10</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">nP631wfhmyqZwzLa</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789097961525</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="06.支付方式listPaymentMethods">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/wallet/main/pay/listPaymentMethods</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">2</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">JBRiC7VsOxSKqQZG</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789097963821</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="07.上传位置location/upload">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/account/user/location/upload</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;longitude&quot;: 113.37866997612848,&#xd;
+  &quot;latitude&quot;: 23.118889973958332,&#xd;
+  &quot;provinceId&quot;: &quot;&quot;,&#xd;
+  &quot;cityId&quot;: &quot;&quot;,&#xd;
+  &quot;regionId&quot;: &quot;&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">104</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">HBmqtKaYcdNTglJQ</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789110944835</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="08.生成创建支付订单createPrePayOrder">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/wallet/main/pay/createPrePayOrder</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;bizId&quot;: &quot;${taskid}&quot;,&#xd;
+  &quot;payChannel&quot;: &quot;ENTERPRISE_WALLET&quot;,&#xd;
+  &quot;payAmount&quot;: 101.12,&#xd;
+  &quot;payEndpoint&quot;: 2,&#xd;
+  &quot;bizCode&quot;: &quot;PAY_ENTERPRISE_WALLET_TASK&quot;,&#xd;
+  &quot;bizOrderNo&quot;: &quot;${taskcode}&quot;,&#xd;
+  &quot;paySubject&quot;: &quot;自动化测试  1&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">204</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">j8KD2EXiuOrD22qU</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789110949774</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON提取器">
+            <stringProp name="JSONPostProcessor.referenceNames">payorderno1</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.data.payOrderNo</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues">wayde_payordernoisnull</stringProp>
+          </JSONPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="09.开始支付startPay">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/wallet/main/pay/startPay</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;payOrderNo&quot;: &quot;${payorderno1}&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">58</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">mOKyxXAclQZzVGBJ</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789110954305</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="10.完成支付">
+          <stringProp name="HTTPSampler.domain">192.168.1.228</stringProp>
+          <stringProp name="HTTPSampler.port">6060</stringProp>
+          <stringProp name="HTTPSampler.path">/bff-mp/v1/wallet/main/pay/confirmPay</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;payOrderNo&quot;: &quot;${payorderno1}&quot;,&#xd;
+  &quot;payPassword&quot;: &quot;888888&quot;&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="Host" elementType="Header">
+                <stringProp name="Header.name">Host</stringProp>
+                <stringProp name="Header.value">192.168.1.228:6060</stringProp>
+              </elementProp>
+              <elementProp name="Connection" elementType="Header">
+                <stringProp name="Header.name">Connection</stringProp>
+                <stringProp name="Header.value">keep-alive</stringProp>
+              </elementProp>
+              <elementProp name="Content-Length" elementType="Header">
+                <stringProp name="Header.name">Content-Length</stringProp>
+                <stringProp name="Header.value">58</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Type" elementType="Header">
+                <stringProp name="Header.name">X-Client-Type</stringProp>
+                <stringProp name="Header.value">MP</stringProp>
+              </elementProp>
+              <elementProp name="X-Client-Version" elementType="Header">
+                <stringProp name="Header.name">X-Client-Version</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="X-Device-Id" elementType="Header">
+                <stringProp name="Header.name">X-Device-Id</stringProp>
+                <stringProp name="Header.value">17890083762911189907</stringProp>
+              </elementProp>
+              <elementProp name="X-Nonce" elementType="Header">
+                <stringProp name="Header.name">X-Nonce</stringProp>
+                <stringProp name="Header.value">mOKyxXAclQZzVGBJ</stringProp>
+              </elementProp>
+              <elementProp name="X-Sign" elementType="Header">
+                <stringProp name="Header.name">X-Sign</stringProp>
+                <stringProp name="Header.value"></stringProp>
+              </elementProp>
+              <elementProp name="X-Tenant-Id" elementType="Header">
+                <stringProp name="Header.name">X-Tenant-Id</stringProp>
+                <stringProp name="Header.value">1</stringProp>
+              </elementProp>
+              <elementProp name="X-Timestamp" elementType="Header">
+                <stringProp name="Header.name">X-Timestamp</stringProp>
+                <stringProp name="Header.value">1789110954305</stringProp>
+              </elementProp>
+              <elementProp name="X-Token" elementType="Header">
+                <stringProp name="Header.name">X-Token</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="appVersion" elementType="Header">
+                <stringProp name="Header.name">appVersion</stringProp>
+                <stringProp name="Header.value">1.9.4</stringProp>
+              </elementProp>
+              <elementProp name="authorization" elementType="Header">
+                <stringProp name="Header.name">authorization</stringProp>
+                <stringProp name="Header.value">${P_token}</stringProp>
+              </elementProp>
+              <elementProp name="content-type" elementType="Header">
+                <stringProp name="Header.name">content-type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+              <elementProp name="osName" elementType="Header">
+                <stringProp name="Header.name">osName</stringProp>
+                <stringProp name="Header.value">4</stringProp>
+              </elementProp>
+              <elementProp name="sslVerify" elementType="Header">
+                <stringProp name="Header.name">sslVerify</stringProp>
+                <stringProp name="Header.value">[object Boolean]</stringProp>
+              </elementProp>
+              <elementProp name="charset" elementType="Header">
+                <stringProp name="Header.name">charset</stringProp>
+                <stringProp name="Header.value">utf-8</stringProp>
+              </elementProp>
+              <elementProp name="User-Agent" elementType="Header">
+                <stringProp name="Header.name">User-Agent</stringProp>
+                <stringProp name="Header.value">Mozilla/5.0 (Linux; Android 16; 25102RKBEC Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/150.0.7871.189 Mobile Safari/537.36 XWEB/1500117 MMWEBSDK/20260502 MMWEBID/4744 MicroMessenger/8.0.76.3141(0x28004C54) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android</stringProp>
+              </elementProp>
+              <elementProp name="Accept-Encoding" elementType="Header">
+                <stringProp name="Header.name">Accept-Encoding</stringProp>
+                <stringProp name="Header.value">gzip, deflate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="调试取样器">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
